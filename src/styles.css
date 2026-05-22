@@ -2,6 +2,11 @@
 
 @import 'tailwindcss';
 
+@plugin 'daisyui' {
+  themes: dracula --default;
+  logs: true;
+}
+
 /* ---------------------------------- theme --------------------------------- */
 @theme {
   --spacing-*: initial;
