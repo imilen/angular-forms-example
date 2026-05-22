@@ -1,6 +1,7 @@
 {
-  "printWidth": 100,
-  "singleQuote": true,
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "htmlWhitespaceSensitivity": "ignore",
   "overrides": [
     {
       "files": "*.html",
@@ -8,5 +9,18 @@
         "parser": "angular"
       }
     }
-  ]
+  ],
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "printWidth": 100,
+  "proseWrap": "never",
+  "semi": true,
+  "singleAttributePerLine": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "tailwindAttributes": ["class", "ngClass"],
+  "tailwindFunctions": [],
+  "tailwindPreserveDuplicates": false,
+  "tailwindPreserveWhitespace": true,
+  "trailingComma": "all",
+  "useTabs": false
 }
