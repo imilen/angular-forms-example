@@ -84,14 +84,14 @@
       placeholder="cvc"
       [formField]="cvc" />
     <ul class="ml-16 list-disc">
-      @if (cvc().dirty() || cvc().touched()) {
-        @for (item of cart.CVC_RULES; track item.kind) {
-          <li
-            [class.text-success]="!validation.findError(cvc, item.kind)"
-            [class.text-error]="validation.findError(cvc, item.kind)">
-            {{ item.message }}
-          </li>
-        }
+      @for (item of cart.CVC_RULES; track item.kind) {
+        @let showCvcRules = !(cvc().dirty() || cvc().touched());
+        <li
+          [class.text-neutral]="showCvcRules"
+          [class.text-success]="!validation.findError(cvc, item.kind)"
+          [class.text-error]="validation.findError(cvc, item.kind)">
+          {{ item.message }}
+        </li>
       }
     </ul>
   </div>
