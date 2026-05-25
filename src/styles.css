@@ -54,6 +54,18 @@
   body {
     @apply text-16 antialiased;
   }
+
+  form {
+    @apply card flex w-md flex-col gap-32 border border-gray-200 p-16 shadow-sm;
+  }
+
+  ul {
+    @apply flex flex-col gap-4;
+  }
+
+  li {
+    @apply text-12;
+  }
 }
 /* --------------------------------- utility -------------------------------- */
 @utility flex-fluid {
@@ -63,4 +75,17 @@
 @utility app-container {
   padding-inline: 1rem;
   @apply container mx-auto my-0 py-0;
+}
+
+@utility input-wrapper {
+  @apply flex w-full gap-4;
+}
+
+/* ---------------------------------- forms --------------------------------- */
+@utility form {
+  @apply flex-fluid relative flex-col items-center justify-center gap-16;
+
+  .child-form {
+    @apply flex flex-col gap-16;
+  }
 }
