@@ -78,7 +78,7 @@
 }
 
 @utility input-wrapper {
-  @apply flex w-full gap-4;
+  @apply flex w-full flex-col gap-4;
 }
 
 /* ---------------------------------- forms --------------------------------- */
