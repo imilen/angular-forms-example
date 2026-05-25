@@ -1,0 +1,62 @@
+<!-- color: https://daisyui.com/docs/colors/ -->
+<form (submit)="onSubmit($event)">
+  @let isCard = paymentModel().method === $.paymentMethod.card;
+  @let isBank = paymentModel().method === $.paymentMethod.bank;
+  <fieldset class="flex flex-col gap-16 border-0">
+    <section class="flex flex-col gap-16">
+      <label class="flex cursor-pointer items-center gap-8">
+        <input
+          class="radio radio-primary"
+          type="radio"
+          [value]="$.paymentMethod.card"
+          [checked]="isCard"
+          (change)="onPaymentMethodChange($.paymentMethod.card)" />
+        Card
+      </label>
+      @if (isCard) {
+        <app-payment-card-form
+          class="child-form"
+          [cardForm]="cardForm" />
+      }
+    </section>
+    <section class="flex flex-col gap-16">
+      <label class="flex cursor-pointer items-center gap-8">
+        <input
+          class="radio radio-primary"
+          type="radio"
+          [value]="$.paymentMethod.bank"
+          [checked]="isBank"
+          (change)="onPaymentMethodChange($.paymentMethod.bank)" />
+        Bank
+      </label>
+      @if (isBank) {
+        <app-payment-bank-form
+          class="child-form"
+          [bankForm]="bankForm" />
+      }
+    </section>
+  </fieldset>
+  <button
+    class="btn w-fit self-center"
+    type="submit"
+    [class.btn-primary]="!form().submitting()"
+    [disabled]="form().submitting()">
+    @if (form().submitting()) {
+      <span
+        class="loading loading-spinner"
+        aria-hidden="true"></span>
+    }
+    <span>Submit</span>
+  </button>
+</form>
+
+<div class="flex gap-16">
+  <div class="flex flex-col gap-16">
+    <p>Value:</p>
+    <pre class="text-12">{{ paymentModel() | json }}</pre>
+  </div>
+  <div class="flex flex-col gap-16">
+    <p>Errors:</p>
+    <pre class="text-12 text-error">{{ form().errorSummary() | json }}</pre>
+  </div>
+</div>

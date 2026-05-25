@@ -1,1 +1,54 @@
-<p>payment-card-form works!</p>
+@let holder = cardForm().cHolder;
+@let number = cardForm().cNumber;
+@let expirationDate = cardForm().cExpirationDate;
+@let cvc = cardForm().cCvc;
+
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(holder)"
+    [class.input-error]="validation.error(holder)"
+    [attr.aria-invalid]="validation.error(holder)"
+    type="text"
+    autocomplete="holder"
+    placeholder="holder"
+    [formField]="holder" />
+</div>
+
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(number)"
+    [class.input-error]="validation.error(number)"
+    [attr.aria-invalid]="validation.error(number)"
+    type="text"
+    inputmode="numeric"
+    autocomplete="number"
+    placeholder="number"
+    [formField]="number" />
+</div>
+
+<div class="flex items-start gap-8">
+  <div class="input-wrapper">
+    <input
+      class="input w-full"
+      [class.input-success]="validation.success(expirationDate)"
+      [class.input-error]="validation.error(expirationDate)"
+      [attr.aria-invalid]="validation.error(expirationDate)"
+      type="date"
+      autocomplete="expirationDate"
+      [formField]="expirationDate" />
+  </div>
+  <div class="input-wrapper">
+    <input
+      class="input w-full"
+      [class.input-success]="validation.success(cvc)"
+      [class.input-error]="validation.error(cvc)"
+      [attr.aria-invalid]="validation.error(cvc)"
+      type="password"
+      inputmode="numeric"
+      autocomplete="cvc"
+      placeholder="cvc"
+      [formField]="cvc" />
+  </div>
+</div>

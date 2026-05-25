@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { PaymentSignalForm } from './payment-signal-form/payment-signal-form';
+import { PaymentForm } from './payment-form/payment-form';
 
 @Component({
   selector: 'app-root',
-  imports: [PaymentSignalForm],
+  imports: [PaymentForm],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -1,1 +1,61 @@
-<p>payment-bank-form works!</p>
+@let country = bankForm().bCountry;
+@let address = bankForm().bAddress;
+@let postCode = bankForm().bPostCode;
+@let city = bankForm().bCity;
+@let name = bankForm().bName;
+
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(country)"
+    [class.input-error]="validation.error(country)"
+    [attr.aria-invalid]="validation.error(country)"
+    type="text"
+    autocomplete="country"
+    placeholder="country"
+    [formField]="country" />
+</div>
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(address)"
+    [class.input-error]="validation.error(address)"
+    [attr.aria-invalid]="validation.error(address)"
+    type="text"
+    autocomplete="address"
+    placeholder="address"
+    [formField]="address" />
+</div>
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(postCode)"
+    [class.input-error]="validation.error(postCode)"
+    [attr.aria-invalid]="validation.error(postCode)"
+    type="text"
+    autocomplete="postCode"
+    placeholder="postCode"
+    [formField]="postCode" />
+</div>
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(city)"
+    [class.input-error]="validation.error(city)"
+    [attr.aria-invalid]="validation.error(city)"
+    type="text"
+    autocomplete="city"
+    placeholder="city"
+    [formField]="city" />
+</div>
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.success(name)"
+    [class.input-error]="validation.error(name)"
+    [attr.aria-invalid]="validation.error(name)"
+    type="text"
+    autocomplete="name"
+    placeholder="name"
+    [formField]="name" />
+</div>
