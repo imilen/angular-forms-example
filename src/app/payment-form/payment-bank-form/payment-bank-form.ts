@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
 import { FormField } from '@angular/forms/signals';
-import { isFieldError, isFieldSuccess } from '../payment-form-field.utils';
+import { findError, isFieldError, isFieldSuccess } from '../payment-form-field.utils';
 import { BankModel } from '../payment-form.models';
 
 @Component({
@@ -17,5 +17,6 @@ export class PaymentBankForm {
   protected readonly validation = {
     success: isFieldSuccess,
     error: isFieldError,
+    findError: findError,
   };
 }
