@@ -1,5 +1,0 @@
-@reference "../../styles.css";
-
-:host {
-  @apply flex-fluid relative items-center justify-center;
-}
