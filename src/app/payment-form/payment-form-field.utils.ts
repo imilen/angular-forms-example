@@ -19,3 +19,12 @@ export function isFieldError(field: StringFieldTree | undefined): boolean {
   const state = field();
   return !state.valid() && (state.dirty() || state.touched());
 }
+
+export function findError(field: StringFieldTree | undefined, kind: string) {
+  if (typeof field !== 'function') {
+    return undefined;
+  }
+
+  const state = field();
+  return state.errorSummary().find((e) => e.kind === kind);
+}

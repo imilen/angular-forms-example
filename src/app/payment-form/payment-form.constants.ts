@@ -1,6 +1,6 @@
 import { BankModel, CardModel, PaymentMethodEnum } from './payment-form.models';
 
-const initialCardData: CardModel = {
+const INITIAL_CARD_DATA: CardModel = {
   method: PaymentMethodEnum.card,
   cHolder: '',
   cNumber: '',
@@ -8,7 +8,7 @@ const initialCardData: CardModel = {
   cCvc: '',
 };
 
-const initialBankData: BankModel = {
+const INITIAL_BANK_DATA: BankModel = {
   method: PaymentMethodEnum.bank,
   bCountry: '',
   bAddress: '',
@@ -17,4 +17,4 @@ const initialBankData: BankModel = {
   bName: '',
 };
 
-export const paymentForm = { initialCardData, initialBankData };
+export const PAYMENT = { INITIAL_CARD_DATA, INITIAL_BANK_DATA };

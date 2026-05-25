@@ -1,11 +1,21 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
-import { applyWhenValue, form, required, schema, submit } from '@angular/forms/signals';
+import {
+  applyWhenValue,
+  form,
+  maxLength,
+  minLength,
+  required,
+  schema,
+  submit,
+  validate,
+} from '@angular/forms/signals';
 import { PaymentService } from '../services/payment-service';
 import { PaymentBankForm } from './payment-bank-form/payment-bank-form';
 import { PaymentCardForm } from './payment-card-form/payment-card-form';
-import { paymentForm } from './payment-form.constants';
+import { CART } from './payment-card-form/payment-card-form.constants';
+import { PAYMENT } from './payment-form.constants';
 import { BankModel, CardModel, PaymentFormModel, PaymentMethodEnum } from './payment-form.models';
 
 @Component({
@@ -25,13 +35,30 @@ export class PaymentForm {
     paymentMethod: PaymentMethodEnum,
   };
 
-  protected readonly paymentModel = signal<PaymentFormModel>(paymentForm.initialCardData);
+  protected readonly paymentModel = signal<PaymentFormModel>(PAYMENT.INITIAL_CARD_DATA);
 
   private readonly CARD_SCHEMA = schema<CardModel>((s) => {
     required(s.cHolder, { message: 'Required' });
     required(s.cNumber, { message: 'Required' });
     required(s.cExpirationDate, { message: 'Required' });
-    required(s.cCvc, { message: 'Required' });
+    required(s.cCvc, { ...CART.CVC_RULES[0] });
+    minLength(s.cCvc, 3, { message: CART.CVC_RULES[1].message });
+    maxLength(s.cCvc, 3, { message: CART.CVC_RULES[1].message });
+    validate(s.cCvc, ({ value }) => {
+      const v = value().trim();
+      if (!/^.{3}$/.test(v)) return CART.CVC_RULES[1];
+      return null;
+    });
+    validate(s.cCvc, ({ value }) => {
+      const v = value().trim();
+      if (!/^\d+$/.test(v)) return CART.CVC_RULES[2];
+      return null;
+    });
+    validate(s.cCvc, ({ value }) => {
+      const v = value().trim();
+      if (!/^[1-9]/.test(v)) return CART.CVC_RULES[3];
+      return null;
+    });
   });
 
   private readonly BANK_SCHEMA = schema<BankModel>((s) => {
@@ -41,7 +68,7 @@ export class PaymentForm {
     required(s.bName, { message: 'Required' });
   });
 
-  protected form = form(this.paymentModel, (schema) => {
+  protected readonly form = form(this.paymentModel, (schema) => {
     applyWhenValue(
       schema,
       (x): x is CardModel => x.method === this.$.paymentMethod.card,
@@ -73,8 +100,8 @@ export class PaymentForm {
 
           f().reset(
             value.method === PaymentMethodEnum.card
-              ? paymentForm.initialCardData
-              : paymentForm.initialBankData,
+              ? PAYMENT.INITIAL_CARD_DATA
+              : PAYMENT.INITIAL_BANK_DATA,
           );
         } catch {}
       },
@@ -87,7 +114,7 @@ export class PaymentForm {
     }
 
     this.paymentModel.set(
-      method === PaymentMethodEnum.card ? paymentForm.initialCardData : paymentForm.initialBankData,
+      method === PaymentMethodEnum.card ? PAYMENT.INITIAL_CARD_DATA : PAYMENT.INITIAL_BANK_DATA,
     );
   }
 }
