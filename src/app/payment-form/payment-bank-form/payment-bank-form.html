@@ -11,7 +11,7 @@
     [class.input-error]="validation.error(country)"
     [attr.aria-invalid]="validation.error(country)"
     type="text"
-    autocomplete="country"
+    autocomplete="country-name"
     placeholder="country"
     [formField]="country" />
 </div>
@@ -22,7 +22,7 @@
     [class.input-error]="validation.error(address)"
     [attr.aria-invalid]="validation.error(address)"
     type="text"
-    autocomplete="address"
+    autocomplete="street-address"
     placeholder="address"
     [formField]="address" />
 </div>
@@ -33,7 +33,7 @@
     [class.input-error]="validation.error(postCode)"
     [attr.aria-invalid]="validation.error(postCode)"
     type="text"
-    autocomplete="postCode"
+    autocomplete="postal-code"
     placeholder="postCode"
     [formField]="postCode" />
 </div>
@@ -44,7 +44,7 @@
     [class.input-error]="validation.error(city)"
     [attr.aria-invalid]="validation.error(city)"
     type="text"
-    autocomplete="city"
+    autocomplete="address-level2"
     placeholder="city"
     [formField]="city" />
 </div>

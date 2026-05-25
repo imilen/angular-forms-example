@@ -10,7 +10,7 @@
     [class.input-error]="validation.error(holder)"
     [attr.aria-invalid]="validation.error(holder)"
     type="text"
-    autocomplete="holder"
+    autocomplete="cc-name"
     placeholder="holder"
     [formField]="holder" />
 </div>
@@ -23,7 +23,7 @@
     [attr.aria-invalid]="validation.error(number)"
     type="text"
     inputmode="numeric"
-    autocomplete="number"
+    autocomplete="cc-number"
     placeholder="number"
     [formField]="number" />
 </div>
@@ -36,7 +36,7 @@
       [class.input-error]="validation.error(expirationDate)"
       [attr.aria-invalid]="validation.error(expirationDate)"
       type="date"
-      autocomplete="expirationDate"
+      autocomplete="cc-exp"
       [formField]="expirationDate" />
   </div>
   <div class="input-wrapper">
@@ -47,7 +47,7 @@
       [attr.aria-invalid]="validation.error(cvc)"
       type="password"
       inputmode="numeric"
-      autocomplete="cvc"
+      autocomplete="cc-csc"
       placeholder="cvc"
       [formField]="cvc" />
   </div>
