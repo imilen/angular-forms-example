@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
 import { FormField } from '@angular/forms/signals';
-import { findError, isFieldError, isFieldSuccess } from '../payment-form-field.utils';
 import { BankModel } from '../payment-form.models';
+import { findError, isFieldError, isFieldSuccess } from '../payment-form.utils';
 
 @Component({
   selector: 'app-payment-bank-form',
