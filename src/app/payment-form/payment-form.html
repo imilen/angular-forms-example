@@ -8,6 +8,7 @@
         <input
           class="radio radio-primary"
           type="radio"
+          name="paymentMethod"
           [value]="$.paymentMethod.card"
           [checked]="isCard"
           (change)="onPaymentMethodChange($.paymentMethod.card)" />
@@ -24,6 +25,7 @@
         <input
           class="radio radio-primary"
           type="radio"
+          name="paymentMethod"
           [value]="$.paymentMethod.bank"
           [checked]="isBank"
           (change)="onPaymentMethodChange($.paymentMethod.bank)" />

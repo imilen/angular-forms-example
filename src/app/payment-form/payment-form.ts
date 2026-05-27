@@ -62,6 +62,7 @@ export class PaymentForm {
   });
 
   private readonly BANK_SCHEMA = schema<BankModel>((s) => {
+    required(s.bCountry, { message: 'Required' });
     required(s.bAddress, { message: 'Required' });
     required(s.bPostCode, { message: 'Required' });
     required(s.bCity, { message: 'Required' });
