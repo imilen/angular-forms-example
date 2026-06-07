@@ -1,20 +1,30 @@
-import { BankModel, CardModel, PaymentMethodEnum } from './payment-form.models';
+import { BankFields, CardFields, PaymentFormModel, PaymentMethodEnum } from './payment-form.models';
 
-const INITIAL_CARD_DATA: CardModel = {
-  method: PaymentMethodEnum.card,
-  cHolder: '',
-  cNumber: '',
-  cExpirationDate: '',
-  cCvc: '',
-};
+function createInitialCardFields(): CardFields {
+  return {
+    cHolder: '',
+    cNumber: '',
+    cExpirationDate: '',
+    cCvc: '',
+  };
+}
 
-const INITIAL_BANK_DATA: BankModel = {
-  method: PaymentMethodEnum.bank,
-  bCountry: '',
-  bAddress: '',
-  bPostCode: '',
-  bCity: '',
-  bName: '',
-};
+function createInitialBankFields(): BankFields {
+  return {
+    bCountry: '',
+    bAddress: '',
+    bPostCode: '',
+    bCity: '',
+    bName: '',
+  };
+}
 
-export const PAYMENT = { INITIAL_CARD_DATA, INITIAL_BANK_DATA };
+function createInitialData(method = PaymentMethodEnum.card): PaymentFormModel {
+  return {
+    method,
+    card: createInitialCardFields(),
+    bank: createInitialBankFields(),
+  };
+}
+
+export const PAYMENT = { createInitialData };

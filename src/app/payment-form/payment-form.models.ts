@@ -28,4 +28,10 @@ export type CardModel = PaymentVariant<PaymentMethodEnum.card, CardFields>;
 
 export type BankModel = PaymentVariant<PaymentMethodEnum.bank, BankFields>;
 
-export type PaymentFormModel = CardModel | BankModel;
+export type PaymentPayload = CardModel | BankModel;
+
+export interface PaymentFormModel {
+  method: PaymentMethodEnum;
+  card: CardFields;
+  bank: BankFields;
+}

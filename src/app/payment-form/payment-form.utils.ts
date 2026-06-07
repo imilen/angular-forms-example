@@ -2,7 +2,7 @@ import type { FieldTree } from '@angular/forms/signals';
 
 type StringFieldTree = FieldTree<string, string>;
 
-export function isFieldSuccess(field: StringFieldTree | undefined): boolean {
+function isFieldSuccess(field: StringFieldTree | undefined): boolean {
   if (typeof field !== 'function') {
     return false;
   }
@@ -11,7 +11,7 @@ export function isFieldSuccess(field: StringFieldTree | undefined): boolean {
   return state.valid() && (state.dirty() || state.touched());
 }
 
-export function isFieldError(field: StringFieldTree | undefined): boolean {
+function isFieldError(field: StringFieldTree | undefined): boolean {
   if (typeof field !== 'function') {
     return false;
   }
@@ -20,7 +20,7 @@ export function isFieldError(field: StringFieldTree | undefined): boolean {
   return !state.valid() && (state.dirty() || state.touched());
 }
 
-export function findError(field: StringFieldTree | undefined, kind: string) {
+function findError(field: StringFieldTree | undefined, kind: string) {
   if (typeof field !== 'function') {
     return undefined;
   }
@@ -28,3 +28,9 @@ export function findError(field: StringFieldTree | undefined, kind: string) {
   const state = field();
   return state.errorSummary().find((e) => e.kind === kind);
 }
+
+export const fieldValidation = {
+  isFieldSuccess,
+  isFieldError,
+  findError,
+};

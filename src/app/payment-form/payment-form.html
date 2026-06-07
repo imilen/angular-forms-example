@@ -17,7 +17,7 @@
       @if (isCard) {
         <app-payment-card-form
           class="child-form"
-          [cardForm]="cardForm" />
+          [cardForm]="form.card" />
       }
     </section>
     <section class="flex flex-col gap-16">
@@ -34,7 +34,7 @@
       @if (isBank) {
         <app-payment-bank-form
           class="child-form"
-          [bankForm]="bankForm" />
+          [bankForm]="form.bank" />
       }
     </section>
   </fieldset>

@@ -7,9 +7,9 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(country)"
-    [class.input-error]="validation.error(country)"
-    [attr.aria-invalid]="validation.error(country)"
+    [class.input-success]="validation.isFieldSuccess(country)"
+    [class.input-error]="validation.isFieldError(country)"
+    [attr.aria-invalid]="validation.isFieldError(country)"
     type="text"
     autocomplete="country-name"
     placeholder="country"
@@ -18,9 +18,9 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(address)"
-    [class.input-error]="validation.error(address)"
-    [attr.aria-invalid]="validation.error(address)"
+    [class.input-success]="validation.isFieldSuccess(address)"
+    [class.input-error]="validation.isFieldError(address)"
+    [attr.aria-invalid]="validation.isFieldError(address)"
     type="text"
     autocomplete="street-address"
     placeholder="address"
@@ -29,9 +29,9 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(postCode)"
-    [class.input-error]="validation.error(postCode)"
-    [attr.aria-invalid]="validation.error(postCode)"
+    [class.input-success]="validation.isFieldSuccess(postCode)"
+    [class.input-error]="validation.isFieldError(postCode)"
+    [attr.aria-invalid]="validation.isFieldError(postCode)"
     type="text"
     autocomplete="postal-code"
     placeholder="postCode"
@@ -40,9 +40,9 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(city)"
-    [class.input-error]="validation.error(city)"
-    [attr.aria-invalid]="validation.error(city)"
+    [class.input-success]="validation.isFieldSuccess(city)"
+    [class.input-error]="validation.isFieldError(city)"
+    [attr.aria-invalid]="validation.isFieldError(city)"
     type="text"
     autocomplete="address-level2"
     placeholder="city"
@@ -51,9 +51,9 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(name)"
-    [class.input-error]="validation.error(name)"
-    [attr.aria-invalid]="validation.error(name)"
+    [class.input-success]="validation.isFieldSuccess(name)"
+    [class.input-error]="validation.isFieldError(name)"
+    [attr.aria-invalid]="validation.isFieldError(name)"
     type="text"
     autocomplete="name"
     placeholder="name"

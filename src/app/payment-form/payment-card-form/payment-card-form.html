@@ -6,22 +6,22 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(holder)"
-    [class.input-error]="validation.error(holder)"
-    [attr.aria-invalid]="validation.error(holder)"
+    [class.input-success]="validation.isFieldSuccess(holder)"
+    [class.input-error]="validation.isFieldError(holder)"
+    [attr.aria-invalid]="validation.isFieldError(holder)"
     type="text"
     autocomplete="cc-name"
     placeholder="holder"
     [formField]="holder" />
   <ul class="ml-16 list-disc">
-    @if (holder().dirty() || holder().touched()) {
-      @for (item of cart.HOLDER_RULES; track item.kind) {
-        <li
-          [class.text-success]="!validation.findError(holder, item.kind)"
-          [class.text-error]="validation.findError(holder, item.kind)">
-          {{ item.message }}
-        </li>
-      }
+    @let showHolderErrors = (holder().dirty() || holder().touched()) && holder().invalid();
+    @if (showHolderErrors) {
+      @let item = holder().errorSummary()[0];
+      <li
+        [class.text-success]="!validation.findError(holder, item.kind)"
+        [class.text-error]="validation.findError(holder, item.kind)">
+        {{ item.message }}
+      </li>
     }
   </ul>
 </div>
@@ -29,23 +29,21 @@
 <div class="input-wrapper">
   <input
     class="input w-full"
-    [class.input-success]="validation.success(number)"
-    [class.input-error]="validation.error(number)"
-    [attr.aria-invalid]="validation.error(number)"
+    [class.input-success]="validation.isFieldSuccess(number)"
+    [class.input-error]="validation.isFieldError(number)"
+    [attr.aria-invalid]="validation.isFieldError(number)"
     type="text"
     inputmode="numeric"
     autocomplete="cc-number"
     placeholder="number"
     [formField]="number" />
   <ul class="ml-16 list-disc">
-    @if (number().dirty() || number().touched()) {
-      @for (item of cart.NUMBER_RULES; track item.kind) {
-        <li
-          [class.text-success]="!validation.findError(number, item.kind)"
-          [class.text-error]="validation.findError(number, item.kind)">
-          {{ item.message }}
-        </li>
-      }
+    @let showNumberErrors = (number().dirty() || number().touched()) && number().invalid();
+    @if (showNumberErrors) {
+      @let item = number().errorSummary()[0];
+      <li [class.text-error]="validation.findError(number, item.kind)">
+        {{ item.message }}
+      </li>
     }
   </ul>
 </div>
@@ -54,40 +52,39 @@
   <div class="input-wrapper">
     <input
       class="input w-full"
-      [class.input-success]="validation.success(expirationDate)"
-      [class.input-error]="validation.error(expirationDate)"
-      [attr.aria-invalid]="validation.error(expirationDate)"
+      [class.input-success]="validation.isFieldSuccess(expirationDate)"
+      [class.input-error]="validation.isFieldError(expirationDate)"
+      [attr.aria-invalid]="validation.isFieldError(expirationDate)"
       type="date"
       autocomplete="cc-exp"
       [formField]="expirationDate" />
     <ul class="ml-16 list-disc">
-      @if (expirationDate().dirty() || expirationDate().touched()) {
-        @for (item of cart.EXPIRATION_DATE_RULES; track item.kind) {
-          <li
-            [class.text-success]="!validation.findError(expirationDate, item.kind)"
-            [class.text-error]="validation.findError(expirationDate, item.kind)">
-            {{ item.message }}
-          </li>
-        }
+      @let showExpirationDateErrors =
+        (expirationDate().dirty() || expirationDate().touched()) && expirationDate().invalid();
+      @if (showExpirationDateErrors) {
+        @let item = expirationDate().errorSummary()[0];
+        <li [class.text-error]="validation.findError(expirationDate, item.kind)">
+          {{ cart.EXPIRATION_DATE_RULES_MAP.get(item.kind) }}
+        </li>
       }
     </ul>
   </div>
   <div class="input-wrapper">
     <input
       class="input w-full"
-      [class.input-success]="validation.success(cvc)"
-      [class.input-error]="validation.error(cvc)"
-      [attr.aria-invalid]="validation.error(cvc)"
+      [class.input-success]="validation.isFieldSuccess(cvc)"
+      [class.input-error]="validation.isFieldError(cvc)"
+      [attr.aria-invalid]="validation.isFieldError(cvc)"
       type="password"
       inputmode="numeric"
       autocomplete="cc-csc"
       placeholder="cvc"
       [formField]="cvc" />
     <ul class="ml-16 list-disc">
-      @for (item of cart.CVC_RULES; track item.kind) {
-        @let showCvcRules = !(cvc().dirty() || cvc().touched());
+      @for (item of cart.CVC_RULES; track $index) {
+        @let showCvcErrors = !(cvc().dirty() || cvc().touched());
         <li
-          [class.text-neutral]="showCvcRules"
+          [class.text-neutral]="showCvcErrors"
           [class.text-success]="!validation.findError(cvc, item.kind)"
           [class.text-error]="validation.findError(cvc, item.kind)">
           {{ item.message }}

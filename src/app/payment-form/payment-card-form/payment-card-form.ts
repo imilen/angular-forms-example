@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { FieldTree } from '@angular/forms/signals';
 import { FormField } from '@angular/forms/signals';
-import { CardModel } from '../payment-form.models';
-import { findError, isFieldError, isFieldSuccess } from '../payment-form.utils';
+import { CardFields } from '../payment-form.models';
+import { fieldValidation } from '../payment-form.utils';
 import { CART } from './payment-card-form.constants';
 
 @Component({
@@ -13,12 +13,7 @@ import { CART } from './payment-card-form.constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentCardForm {
-  cardForm = input.required<FieldTree<CardModel>>();
+  cardForm = input.required<FieldTree<CardFields>>();
   protected readonly cart = CART;
-
-  protected readonly validation = {
-    success: isFieldSuccess,
-    error: isFieldError,
-    findError: findError,
-  };
+  protected readonly validation = fieldValidation;
 }

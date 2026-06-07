@@ -1,8 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import type { FieldTree } from '@angular/forms/signals';
 import {
-  applyWhenValue,
+  applyWhen,
   form,
   maxLength,
   minLength,
@@ -11,12 +10,19 @@ import {
   submit,
   validate,
 } from '@angular/forms/signals';
+import dayjs from 'dayjs';
 import { PaymentService } from '../services/payment-service';
 import { PaymentBankForm } from './payment-bank-form/payment-bank-form';
 import { PaymentCardForm } from './payment-card-form/payment-card-form';
 import { CART } from './payment-card-form/payment-card-form.constants';
 import { PAYMENT } from './payment-form.constants';
-import { BankModel, CardModel, PaymentFormModel, PaymentMethodEnum } from './payment-form.models';
+import {
+  BankFields,
+  CardFields,
+  PaymentFormModel,
+  PaymentMethodEnum,
+  PaymentPayload,
+} from './payment-form.models';
 
 @Component({
   selector: 'app-payment-form',
@@ -35,12 +41,20 @@ export class PaymentForm {
     paymentMethod: PaymentMethodEnum,
   };
 
-  protected readonly paymentModel = signal<PaymentFormModel>(PAYMENT.INITIAL_CARD_DATA);
+  protected readonly paymentModel = signal<PaymentFormModel>(PAYMENT.createInitialData());
 
-  private readonly CARD_SCHEMA = schema<CardModel>((s) => {
-    required(s.cHolder, { message: 'Required' });
-    required(s.cNumber, { message: 'Required' });
-    required(s.cExpirationDate, { message: 'Required' });
+  private readonly CARD_SCHEMA = schema<CardFields>((s) => {
+    required(s.cHolder, { ...CART.HOLDER_RULES[0] });
+    required(s.cNumber, { ...CART.NUMBER_RULES[0] });
+    validate(s.cExpirationDate, ({ value }) => {
+      const v = value().trim();
+      const day = dayjs(v, 'YYYY-MM-DD');
+      if (!v) return CART.EXPIRATION_DATE_RULES[0];
+      if (v === '') return CART.EXPIRATION_DATE_RULES[1];
+      if (!day.isValid()) return CART.EXPIRATION_DATE_RULES[2];
+      if (!day.isAfter(dayjs('1950-01-01', 'YYYY-MM-DD'))) return CART.EXPIRATION_DATE_RULES[3];
+      return null;
+    });
     required(s.cCvc, { ...CART.CVC_RULES[0] });
     minLength(s.cCvc, 3, { message: CART.CVC_RULES[1].message });
     maxLength(s.cCvc, 3, { message: CART.CVC_RULES[1].message });
@@ -61,7 +75,7 @@ export class PaymentForm {
     });
   });
 
-  private readonly BANK_SCHEMA = schema<BankModel>((s) => {
+  private readonly BANK_SCHEMA = schema<BankFields>((s) => {
     required(s.bCountry, { message: 'Required' });
     required(s.bAddress, { message: 'Required' });
     required(s.bPostCode, { message: 'Required' });
@@ -70,25 +84,17 @@ export class PaymentForm {
   });
 
   protected readonly form = form(this.paymentModel, (schema) => {
-    applyWhenValue(
-      schema,
-      (x): x is CardModel => x.method === this.$.paymentMethod.card,
+    applyWhen(
+      schema.card,
+      ({ valueOf }) => valueOf(schema.method) === this.$.paymentMethod.card,
       this.CARD_SCHEMA,
     );
-    applyWhenValue(
-      schema,
-      (x): x is BankModel => x.method === this.$.paymentMethod.bank,
+    applyWhen(
+      schema.bank,
+      ({ valueOf }) => valueOf(schema.method) === this.$.paymentMethod.bank,
       this.BANK_SCHEMA,
     );
   });
-
-  protected get cardForm(): FieldTree<CardModel> {
-    return this.form as FieldTree<CardModel>;
-  }
-
-  protected get bankForm(): FieldTree<BankModel> {
-    return this.form as FieldTree<BankModel>;
-  }
 
   protected onSubmit(event: Event): void {
     event.preventDefault();
@@ -96,14 +102,12 @@ export class PaymentForm {
     submit(this.form, {
       action: async (f) => {
         const value = f().value();
-        try {
-          await this.payment.pay(value);
+        const payload = this.getPaymentPayload(value);
 
-          f().reset(
-            value.method === PaymentMethodEnum.card
-              ? PAYMENT.INITIAL_CARD_DATA
-              : PAYMENT.INITIAL_BANK_DATA,
-          );
+        try {
+          await this.payment.pay(payload);
+
+          f().reset(PAYMENT.createInitialData(value.method));
         } catch {}
       },
     });
@@ -114,8 +118,12 @@ export class PaymentForm {
       return;
     }
 
-    this.paymentModel.set(
-      method === PaymentMethodEnum.card ? PAYMENT.INITIAL_CARD_DATA : PAYMENT.INITIAL_BANK_DATA,
-    );
+    this.paymentModel.set(PAYMENT.createInitialData(method));
+  }
+
+  private getPaymentPayload(value: PaymentFormModel): PaymentPayload {
+    return value.method === PaymentMethodEnum.card
+      ? { method: PaymentMethodEnum.card, ...value.card }
+      : { method: PaymentMethodEnum.bank, ...value.bank };
   }
 }
