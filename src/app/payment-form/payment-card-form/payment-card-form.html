@@ -3,6 +3,7 @@
 @let expirationDate = cardForm().cExpirationDate;
 @let cvc = cardForm().cCvc;
 
+<!-- ------------------------------- holder -------------------------------- -->
 <div class="input-wrapper">
   <input
     class="input w-full"
@@ -13,19 +14,17 @@
     autocomplete="cc-name"
     placeholder="holder"
     [formField]="holder" />
-  <ul class="ml-16 list-disc">
-    @let showHolderErrors = (holder().dirty() || holder().touched()) && holder().invalid();
-    @if (showHolderErrors) {
-      @let item = holder().errorSummary()[0];
-      <li
-        [class.text-success]="!validation.findError(holder, item.kind)"
-        [class.text-error]="validation.findError(holder, item.kind)">
-        {{ item.message }}
+  @let showHolderErrors = (holder().dirty() || holder().touched()) && holder().invalid();
+  @if (showHolderErrors) {
+    <ul class="ml-16 list-disc">
+      @let item = validation.findError(holder);
+      <li [class.text-error]="item">
+        {{ item?.message }}
       </li>
-    }
-  </ul>
+    </ul>
+  }
 </div>
-
+<!-- ------------------------------- number -------------------------------- -->
 <div class="input-wrapper">
   <input
     class="input w-full"
@@ -37,38 +36,38 @@
     autocomplete="cc-number"
     placeholder="number"
     [formField]="number" />
-  <ul class="ml-16 list-disc">
-    @let showNumberErrors = (number().dirty() || number().touched()) && number().invalid();
-    @if (showNumberErrors) {
-      @let item = number().errorSummary()[0];
-      <li [class.text-error]="validation.findError(number, item.kind)">
-        {{ item.message }}
+  @let showNumberErrors = (number().dirty() || number().touched()) && number().invalid();
+  @if (showNumberErrors) {
+    <ul class="ml-16 list-disc">
+      @let item = validation.findError(number);
+      <li [class.text-error]="item">
+        {{ item?.message }}
       </li>
-    }
-  </ul>
+    </ul>
+  }
 </div>
-
 <div class="flex items-start gap-8">
+  <!-- --------------------------- expirationDate ---------------------------- -->
   <div class="input-wrapper">
     <input
       class="input w-full"
-      [class.input-success]="validation.isFieldSuccess(expirationDate)"
-      [class.input-error]="validation.isFieldError(expirationDate)"
-      [attr.aria-invalid]="validation.isFieldError(expirationDate)"
+      [class.input-success]="expirationDate().valid() && expirationDate().touched()"
+      [class.input-error]="expirationDate().invalid() && expirationDate().touched()"
+      [attr.aria-invalid]="expirationDate().invalid() && expirationDate().touched()"
       type="date"
       autocomplete="cc-exp"
       [formField]="expirationDate" />
-    <ul class="ml-16 list-disc">
-      @let showExpirationDateErrors =
-        (expirationDate().dirty() || expirationDate().touched()) && expirationDate().invalid();
-      @if (showExpirationDateErrors) {
-        @let item = expirationDate().errorSummary()[0];
-        <li [class.text-error]="validation.findError(expirationDate, item.kind)">
-          {{ cart.EXPIRATION_DATE_RULES_MAP.get(item.kind) }}
+    @let showExpirationDateErrors = expirationDate().invalid() && expirationDate().touched();
+    @if (showExpirationDateErrors) {
+      <ul class="ml-16 list-disc">
+        @let item = validation.findError(expirationDate);
+        <li [class.text-error]="item">
+          {{ item?.message }}
         </li>
-      }
-    </ul>
+      </ul>
+    }
   </div>
+  <!-- --------------------------------- cvc --------------------------------- -->
   <div class="input-wrapper">
     <input
       class="input w-full"
@@ -85,8 +84,8 @@
         @let showCvcErrors = !(cvc().dirty() || cvc().touched());
         <li
           [class.text-neutral]="showCvcErrors"
-          [class.text-success]="!validation.findError(cvc, item.kind)"
-          [class.text-error]="validation.findError(cvc, item.kind)">
+          [class.text-success]="!validation.findErrors(cvc, item.kind)"
+          [class.text-error]="validation.findErrors(cvc, item.kind)">
           {{ item.message }}
         </li>
       }

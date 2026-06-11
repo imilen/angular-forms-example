@@ -3,6 +3,7 @@
   @let isCard = paymentModel().method === $.paymentMethod.card;
   @let isBank = paymentModel().method === $.paymentMethod.bank;
   <fieldset class="flex flex-col gap-16 border-0">
+    <!-- -------------------------------- Card --------------------------------- -->
     <section class="flex flex-col gap-16">
       <label class="flex cursor-pointer items-center gap-8">
         <input
@@ -20,6 +21,7 @@
           [cardForm]="form.card" />
       }
     </section>
+    <!-- -------------------------------- Bank --------------------------------- -->
     <section class="flex flex-col gap-16">
       <label class="flex cursor-pointer items-center gap-8">
         <input
@@ -42,7 +44,7 @@
     class="btn w-fit self-center"
     type="submit"
     [class.btn-primary]="!form().submitting()"
-    [disabled]="form().submitting()">
+    [disabled]="form().submitting() || form().invalid()">
     @if (form().submitting()) {
       <span
         class="loading loading-spinner"

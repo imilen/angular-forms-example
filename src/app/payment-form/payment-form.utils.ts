@@ -17,10 +17,10 @@ function isFieldError(field: StringFieldTree | undefined): boolean {
   }
 
   const state = field();
-  return !state.valid() && (state.dirty() || state.touched());
+  return state.invalid() && (state.dirty() || state.touched());
 }
 
-function findError(field: StringFieldTree | undefined, kind: string) {
+function findErrors(field: StringFieldTree | undefined, kind: string) {
   if (typeof field !== 'function') {
     return undefined;
   }
@@ -29,8 +29,29 @@ function findError(field: StringFieldTree | undefined, kind: string) {
   return state.errorSummary().find((e) => e.kind === kind);
 }
 
+function findError(field: StringFieldTree | undefined) {
+  if (typeof field !== 'function') {
+    return undefined;
+  }
+
+  const state = field();
+
+  if (state.invalid()) {
+    const e = state.errorSummary()[0];
+
+    if (e.kind == 'parse') {
+      return { kind: 'parse', message: 'Is not valid' };
+    }
+
+    return e;
+  }
+
+  return null;
+}
+
 export const fieldValidation = {
   isFieldSuccess,
   isFieldError,
+  findErrors,
   findError,
 };
