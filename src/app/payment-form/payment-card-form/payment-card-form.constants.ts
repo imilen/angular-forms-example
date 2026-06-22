@@ -6,17 +6,18 @@ import {
   validate,
   ValidationError,
 } from '@angular/forms/signals';
-import dayjs from 'dayjs';
+
+import { dayjs } from '../../app.utils';
 import { CardFields } from '../payment-form.models';
 
 const HOLDER_RULES: ValidationError[] = [{ kind: 'required', message: 'Required' }];
 const NUMBER_RULES: ValidationError[] = [{ kind: 'required', message: 'Required' }];
 const EXPIRATION_DATE_RULES: ValidationError[] = [
   { kind: 'required', message: 'Required' },
-  { kind: 'after', message: 'Must be аfter 1950-01-01' },
+  { kind: 'minDate', message: 'The minimum date is 1950-01-01' },
 ];
 const CVC_RULES: ValidationError[] = [
-  ...HOLDER_RULES,
+  { kind: 'required', message: 'Required' },
   { kind: 'length', message: 'Must be exactly 3 digits' },
   { kind: 'digits', message: 'Only digits are allowed' },
   { kind: 'startsWithZero', message: 'First digit cannot be zero' },
@@ -32,7 +33,8 @@ const SCHEMA = schema<CardFields>((s) => {
   validate(s.cExpirationDate, ({ value }) => {
     const v = value().trim();
     const day = dayjs(v, 'YYYY-MM-DD', true);
-    if (!day.isAfter(dayjs('1950-01-01', 'YYYY-MM-DD'))) return EXPIRATION_DATE_RULES[1];
+    if (!day.isAfter(dayjs('1950-01-01', 'YYYY-MM-DD', true).subtract(1, 'day')))
+      return EXPIRATION_DATE_RULES[1];
     return null;
   });
   // cvc

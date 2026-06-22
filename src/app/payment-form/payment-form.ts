@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { applyWhen, form, submit } from '@angular/forms/signals';
 import { PaymentService } from '../services/payment-service';
 import { PaymentBankForm } from './payment-bank-form/payment-bank-form';
@@ -14,7 +14,6 @@ import { PaymentFormModel, PaymentMethodEnum, PaymentPayload } from './payment-f
   imports: [JsonPipe, PaymentBankForm, PaymentCardForm],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.form]': 'true',
   },

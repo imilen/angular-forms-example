@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import type { PaymentPayload } from '../payment-form/payment-form.models';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class PaymentService {
   pay(payload: PaymentPayload): Promise<void> {
     console.log(payload);
