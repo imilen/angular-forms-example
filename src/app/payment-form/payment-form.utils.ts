@@ -1,6 +1,6 @@
 import type { FieldTree } from '@angular/forms/signals';
 
-type StringFieldTree = FieldTree<string, string>;
+type StringFieldTree = FieldTree<string | Date, string>;
 
 function isFieldSuccess(field: StringFieldTree): boolean {
   const state = field();

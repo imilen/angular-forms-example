@@ -1,0 +1,32 @@
+<div class="input-wrapper">
+  <input
+    class="input w-full"
+    [class.input-success]="validation.isFieldSuccess(field())"
+    [class.input-error]="validation.isFieldError(field())"
+    [attr.aria-invalid]="validation.isFieldError(field())"
+    [type]="type()"
+    [attr.inputmode]="inputmode()"
+    [attr.autocomplete]="autocomplete()"
+    [attr.placeholder]="placeholder()"
+    [formField]="field()" />
+
+  @if (rules(); as ruleList) {
+    <ul class="ml-16 list-disc">
+      @for (rule of ruleList; track rule.kind) {
+        <li
+          [class.text-neutral]="showRules()"
+          [class.text-success]="!validation.findErrors(field(), rule.kind)"
+          [class.text-error]="validation.findErrors(field(), rule.kind)">
+          {{ rule.message }}
+        </li>
+      }
+    </ul>
+  } @else if (showSingleError()) {
+    <ul class="ml-16 list-disc">
+      @let item = validation.findError(field());
+      <li [class.text-error]="item">
+        {{ item?.message }}
+      </li>
+    </ul>
+  }
+</div>

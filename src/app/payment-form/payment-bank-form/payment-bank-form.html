@@ -4,58 +4,23 @@
 @let city = bankForm().bCity;
 @let name = bankForm().bName;
 
-<div class="input-wrapper">
-  <input
-    class="input w-full"
-    [class.input-success]="validation.isFieldSuccess(country)"
-    [class.input-error]="validation.isFieldError(country)"
-    [attr.aria-invalid]="validation.isFieldError(country)"
-    type="text"
-    autocomplete="country-name"
-    placeholder="country"
-    [formField]="country" />
-</div>
-<div class="input-wrapper">
-  <input
-    class="input w-full"
-    [class.input-success]="validation.isFieldSuccess(address)"
-    [class.input-error]="validation.isFieldError(address)"
-    [attr.aria-invalid]="validation.isFieldError(address)"
-    type="text"
-    autocomplete="street-address"
-    placeholder="address"
-    [formField]="address" />
-</div>
-<div class="input-wrapper">
-  <input
-    class="input w-full"
-    [class.input-success]="validation.isFieldSuccess(postCode)"
-    [class.input-error]="validation.isFieldError(postCode)"
-    [attr.aria-invalid]="validation.isFieldError(postCode)"
-    type="text"
-    autocomplete="postal-code"
-    placeholder="postCode"
-    [formField]="postCode" />
-</div>
-<div class="input-wrapper">
-  <input
-    class="input w-full"
-    [class.input-success]="validation.isFieldSuccess(city)"
-    [class.input-error]="validation.isFieldError(city)"
-    [attr.aria-invalid]="validation.isFieldError(city)"
-    type="text"
-    autocomplete="address-level2"
-    placeholder="city"
-    [formField]="city" />
-</div>
-<div class="input-wrapper">
-  <input
-    class="input w-full"
-    [class.input-success]="validation.isFieldSuccess(name)"
-    [class.input-error]="validation.isFieldError(name)"
-    [attr.aria-invalid]="validation.isFieldError(name)"
-    type="text"
-    autocomplete="name"
-    placeholder="name"
-    [formField]="name" />
-</div>
+<app-input-wrapper
+  [field]="country"
+  autocomplete="country-name"
+  placeholder="country" />
+<app-input-wrapper
+  [field]="address"
+  autocomplete="street-address"
+  placeholder="address" />
+<app-input-wrapper
+  [field]="postCode"
+  autocomplete="postal-code"
+  placeholder="postCode" />
+<app-input-wrapper
+  [field]="city"
+  autocomplete="address-level2"
+  placeholder="city" />
+<app-input-wrapper
+  [field]="name"
+  autocomplete="name"
+  placeholder="name" />

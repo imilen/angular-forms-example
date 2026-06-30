@@ -10,11 +10,13 @@ import {
 import { dayjs } from '../../app.utils';
 import { CardFields } from '../payment-form.models';
 
+const MIN_EXPIRATION_DATE = dayjs('1950-01-01', 'YYYY-MM-DD', true);
+
 const HOLDER_RULES: ValidationError[] = [{ kind: 'required', message: 'Required' }];
 const NUMBER_RULES: ValidationError[] = [{ kind: 'required', message: 'Required' }];
 const EXPIRATION_DATE_RULES: ValidationError[] = [
   { kind: 'required', message: 'Required' },
-  { kind: 'minDate', message: 'The minimum date is 1950-01-01' },
+  { kind: 'minDate', message: `The minimum date is ${MIN_EXPIRATION_DATE.format('YYYY-MM-DD')}` },
 ];
 const CVC_RULES: ValidationError[] = [
   { kind: 'required', message: 'Required' },
@@ -31,10 +33,15 @@ const SCHEMA = schema<CardFields>((s) => {
   // expirationDate
   required(s.cExpirationDate, { ...EXPIRATION_DATE_RULES[0] });
   validate(s.cExpirationDate, ({ value }) => {
-    const v = value().trim();
-    const day = dayjs(v, 'YYYY-MM-DD', true);
-    if (!day.isAfter(dayjs('1950-01-01', 'YYYY-MM-DD', true).subtract(1, 'day')))
-      return EXPIRATION_DATE_RULES[1];
+    const day = dayjs(value(), 'YYYY-MM-DD', true);
+    if (!day.isValid()) return null;
+
+    const maxDate = dayjs(MIN_EXPIRATION_DATE).add(100, 'year').endOf('year');
+
+    if (day.isBefore(MIN_EXPIRATION_DATE)) return EXPIRATION_DATE_RULES[1];
+    if (day.isAfter(maxDate)) {
+      return { kind: 'maxDate', message: `The maximum date is ${maxDate.format('YYYY-MM-DD')}` };
+    }
     return null;
   });
   // cvc
