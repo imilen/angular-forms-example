@@ -17,6 +17,7 @@ const NUMBER_RULES: ValidationError[] = [{ kind: 'required', message: 'Required'
 const EXPIRATION_DATE_RULES: ValidationError[] = [
   { kind: 'required', message: 'Required' },
   { kind: 'minDate', message: `The minimum date is ${MIN_EXPIRATION_DATE.format('YYYY-MM-DD')}` },
+  { kind: 'invalid', message: 'Is not a valid date' },
 ];
 const CVC_RULES: ValidationError[] = [
   { kind: 'required', message: 'Required' },
@@ -33,10 +34,13 @@ const SCHEMA = schema<CardFields>((s) => {
   // expirationDate
   required(s.cExpirationDate, { ...EXPIRATION_DATE_RULES[0] });
   validate(s.cExpirationDate, ({ value }) => {
-    const day = dayjs(value(), 'YYYY-MM-DD', true);
-    if (!day.isValid()) return null;
+    const v = value().trim();
+    if (!v) return null;
 
-    const maxDate = dayjs(MIN_EXPIRATION_DATE).add(100, 'year').endOf('year');
+    const day = dayjs(v, 'YYYY-MM-DD', true);
+    if (!day.isValid()) return EXPIRATION_DATE_RULES[2];
+
+    const maxDate = dayjs().add(1, 'year').subtract(1, 'day');
 
     if (day.isBefore(MIN_EXPIRATION_DATE)) return EXPIRATION_DATE_RULES[1];
     if (day.isAfter(maxDate)) {
